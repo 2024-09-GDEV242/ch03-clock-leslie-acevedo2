@@ -83,6 +83,19 @@ public class ClockDisplay
      */
     private void updateDisplay()
     {
+        int hour = hours.getValue();
+        String period;
+        if (hour == 0) {
+            hour = 12;
+            period = "AM";
+        } else if (hour == 12) {
+                period = "PM";
+            } else if (hour > 12) {
+                hour = hour - 12;
+                period = "PM";
+            } else {
+                period = "AM";
+            }
         displayString = hours.getDisplayValue() + ":" + 
                         minutes.getDisplayValue();
     }
