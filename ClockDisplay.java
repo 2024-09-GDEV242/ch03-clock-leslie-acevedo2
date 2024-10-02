@@ -29,8 +29,9 @@ public class ClockDisplay
      */
     public ClockDisplay()
     {
-        hours = new NumberDisplay(24);
+        hours = new NumberDisplay(12);
         minutes = new NumberDisplay(60);
+        isAM = true;
         updateDisplay();
     }
 
@@ -39,11 +40,11 @@ public class ClockDisplay
      * creates a new clock set at the time specified by the 
      * parameters.
      */
-    public ClockDisplay(int hour, int minute)
+    public ClockDisplay(int hour, int minute, boolean isAM)
     {
-        hours = new NumberDisplay(24);
+        hours = new NumberDisplay(12);
         minutes = new NumberDisplay(60);
-        setTime(hour, minute);
+        setTime(hour, minute, isAM);
     }
 
     /**
@@ -55,6 +56,9 @@ public class ClockDisplay
         minutes.increment();
         if(minutes.getValue() == 0) {  // it just rolled over!
             hours.increment();
+            if (hours.getValue() == 1) {
+                isAM = !isAM;
+            }
         }
         updateDisplay();
     }
@@ -63,13 +67,17 @@ public class ClockDisplay
      * Set the time of the display to the specified hour and
      * minute.
      */
-    public void setTime(int hour, int minute)
+    public void setTime(int hour, int minute, boolean isAM)
     {
-        hours.setValue(hour);
-        minutes.setValue(minute);
+        if (hour ==0) {
+            this.hours.setValue(12);
+        } else {
+            this.hours.setValue(hour);
+        } 
+        this.minutes.setValue(minute);
+        this.isAM = isAM;
         updateDisplay();
     }
-
     /**
      * Return the current time of this display in the format HH:MM.
      */
@@ -83,20 +91,8 @@ public class ClockDisplay
      */
     private void updateDisplay()
     {
-        int hour = hours.getValue();
-        String period;
-        if (hour == 0) {
-            hour = 12;
-            period = "AM";
-        } else if (hour == 12) {
-                period = "PM";
-            } else if (hour > 12) {
-                hour = hour - 12;
-                period = "PM";
-            } else {
-                period = "AM";
-            }
+        String period = isAM? "AM" : "PM";
         displayString = hours.getDisplayValue() + ":" + 
-                        minutes.getDisplayValue();
+                        minutes.getDisplayValue() + period;
     }
 }
