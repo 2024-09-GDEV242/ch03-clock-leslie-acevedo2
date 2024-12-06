@@ -29,8 +29,9 @@ public class ClockDisplay
      */
     public ClockDisplay()
     {
-        hours = new NumberDisplay(24);
+        hours = new NumberDisplay(12);
         minutes = new NumberDisplay(60);
+        isAM = true;
         updateDisplay();
     }
 
@@ -41,8 +42,9 @@ public class ClockDisplay
      */
     public ClockDisplay(int hour, int minute)
     {
-        hours = new NumberDisplay(24);
+        hours = new NumberDisplay(12);
         minutes = new NumberDisplay(60);
+        isAM = true;
         setTime(hour, minute);
     }
 
@@ -55,6 +57,9 @@ public class ClockDisplay
         minutes.increment();
         if(minutes.getValue() == 0) {  // it just rolled over!
             hours.increment();
+        }
+        if(hours.getValue() == 0){
+            isAM = !isAM;
         }
         updateDisplay();
     }
@@ -82,21 +87,15 @@ public class ClockDisplay
      * Update the internal string that represents the display.
      */
     private void updateDisplay()
+    
     {
-        int hour = hours.getValue();
-        String period;
-        if (hour == 0) {
-            hour = 12;
-            period = "AM";
-        } else if (hour == 12) {
-                period = "PM";
-            } else if (hour > 12) {
-                hour = hour - 12;
-                period = "PM";
-            } else {
-                period = "AM";
-            }
-        displayString = hours.getDisplayValue() + ":" + 
-                        minutes.getDisplayValue();
+        if(hours.getLimit() == 12){
+           displayString = (hours.getValue() == 0? "12":hours.getDisplayValue()) + ":" + 
+                        minutes.getDisplayValue() + " " + (isAM?"AM":"PM"); 
+        }else{
+            displayString = hours.getDisplayValue() + ":" + 
+                        minutes.getDisplayValue() + " ";
+        }
+        
     }
 }

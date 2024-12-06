@@ -32,6 +32,13 @@ public class NumberDisplay
     {
         return value;
     }
+    /**
+     * Return the limit.
+     */
+    public int getLimit()
+    {
+        return limit;
+    }
 
     /**
      * Return the display value (that is, the current value as a two-digit
@@ -46,6 +53,7 @@ public class NumberDisplay
         else {
             return "" + value;
         }
+        
     }
 
     /**
